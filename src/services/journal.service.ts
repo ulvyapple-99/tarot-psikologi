@@ -15,6 +15,7 @@ export interface JournalEntry {
   }[];
   aiInterpretation: string;
   userNotes: string;
+  context?: string; // New: User Intention
 }
 
 @Injectable({
@@ -55,6 +56,26 @@ export class JournalService {
   deleteEntry(id: string) {
     this.entries.update(current => current.filter(e => e.id !== id));
     this.saveToStorage();
+  }
+
+  // Backup Features
+  exportData(): string {
+    return JSON.stringify(this.entries(), null, 2);
+  }
+
+  importData(jsonString: string): boolean {
+    try {
+      const parsed = JSON.parse(jsonString);
+      if (Array.isArray(parsed)) {
+        this.entries.set(parsed);
+        this.saveToStorage();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.error("Import failed", e);
+      return false;
+    }
   }
 
   private saveToStorage() {

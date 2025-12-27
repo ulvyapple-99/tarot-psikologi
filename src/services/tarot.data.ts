@@ -1,13 +1,17 @@
 
 export interface TarotCard {
   id: number;
+  shortCode: string; // e.g., 'm00', 'c01', 'w10' for mapping images
   name: string;
   nameIndo: string;
   arcana: 'Major' | 'Minor';
   suit?: 'Tongkat' | 'Piala' | 'Pedang' | 'Koin';
-  number?: number; // 0-21 for Major, 1-14 for Minor (11=Page, 12=Knight, 13=Queen, 14=King)
+  number?: number; 
   keywords: string[];
   description: string;
+  astrology?: string; // Zodiak atau Planet
+  numerology?: number;
+  element?: string;
 }
 
 export interface SpreadPosition {
@@ -23,29 +27,30 @@ export interface TarotSpread {
   positions: SpreadPosition[];
 }
 
-export const MAJOR_ARCANA: TarotCard[] = [
-  { id: 0, name: "The Fool", nameIndo: "Si Dungu", arcana: "Major", number: 0, keywords: ["Awal baru", "Kepolosan", "Spontanitas", "Potensi"], description: "Keterbukaan terhadap pengalaman baru, keberanian, dan petualangan." },
-  { id: 1, name: "The Magician", nameIndo: "Sang Pesulap", arcana: "Major", number: 1, keywords: ["Manifestasi", "Keahlian", "Konsentrasi", "Kekuatan"], description: "Komunikasi, penggunaan akal sehat, dan masalah mental." },
-  { id: 2, name: "The High Priestess", nameIndo: "Pendeta Wanita", arcana: "Major", number: 2, keywords: ["Intuisi", "Bawah Sadar", "Misteri", "Kebijaksanaan"], description: "Pengembangan psikis, keimanan, dan pemeliharaan diri." },
-  { id: 3, name: "The Empress", nameIndo: "Sang Ratu", arcana: "Major", number: 3, keywords: ["Kesuburan", "Alam", "Kenyamanan", "Keibuan"], description: "Hubungan dengan perempuan, hal-hal yang menarik, kreativitas, dan pengasuhan." },
-  { id: 4, name: "The Emperor", nameIndo: "Sang Raja", arcana: "Major", number: 4, keywords: ["Otoritas", "Struktur", "Ayah", "Logika"], description: "Hal baru, ketegasan sikap, penataan, dan berkaitan dengan pria." },
-  { id: 5, name: "The Hierophant", nameIndo: "Ahli Tafsir Agama", arcana: "Major", number: 5, keywords: ["Tradisi", "Keyakinan", "Pendidikan", "Konformitas"], description: "Belajar dan mengajar, mendengarkan, serta berbicara dan bekerja dalam struktur sosial." },
-  { id: 6, name: "The Lovers", nameIndo: "Sang Pecinta", arcana: "Major", number: 6, keywords: ["Cinta", "Pilihan", "Harmoni", "Nilai"], description: "Hubungan, membuat keputusan, dan menerima tanggung jawab." },
-  { id: 7, name: "The Chariot", nameIndo: "Kereta Perang", arcana: "Major", number: 7, keywords: ["Kendali", "Tekad", "Kemenangan", "Arah"], description: "Pembuktian, perjalanan, belajar melindungi diri sendiri atau orang lain." },
-  { id: 8, name: "Strength", nameIndo: "Kekuatan", arcana: "Major", number: 8, keywords: ["Keberanian", "Persuasi", "Pengaruh", "Welas Asih"], description: "Keinginan berkreasi, gairah, tantangan, dan penahanan emosi." },
-  { id: 9, name: "The Hermit", nameIndo: "Sang Petapa", arcana: "Major", number: 9, keywords: ["Introspeksi", "Pencarian", "Kesendirian", "Bimbingan"], description: "Introspeksi diri, belajar dari pengalaman, penyempurnaan, dan penyelesaian suatu pekerjaan." },
-  { id: 10, name: "Wheel of Fortune", nameIndo: "Roda Keberuntungan", arcana: "Major", number: 10, keywords: ["Siklus", "Takdir", "Titik Balik", "Perubahan"], description: "Perubahan hidup, bagaimana menyelesaikan suatu siklus, nasib dan peruntungan." },
-  { id: 11, name: "Justice", nameIndo: "Keadilan", arcana: "Major", number: 11, keywords: ["Kebenaran", "Hukum", "Sebab-Akibat", "Kejelasan"], description: "Hukum dan pertimbangan, keseimbangan dan keharmonisan, kejujuran." },
-  { id: 12, name: "The Hanged Man", nameIndo: "Lelaki Digantung", arcana: "Major", number: 12, keywords: ["Pengorbanan", "Melepaskan", "Perspektif Baru", "Jeda"], description: "Pengorbanan, sikap, dan keyakinan serta perspektif baru." },
-  { id: 13, name: "Death", nameIndo: "Kematian", arcana: "Major", number: 13, keywords: ["Akhir", "Transformasi", "Transisi", "Pelepasan"], description: "Bagaimana melepaskan situasi, memasuki fase baru, kelahiran kembali." },
-  { id: 14, name: "Temperance", nameIndo: "Kesederhanaan", arcana: "Major", number: 14, keywords: ["Keseimbangan", "Moderasi", "Kesabaran", "Tujuan"], description: "Kesehatan, menerima apa adanya, dan praktik penyembuhan." },
-  { id: 15, name: "The Devil", nameIndo: "Setan", arcana: "Major", number: 15, keywords: ["Keterikatan", "Materialisme", "Ketidaktahuan", "Bayangan"], description: "Perjuangan, lingkungan, dan sikap." },
-  { id: 16, name: "The Tower", nameIndo: "Menara", arcana: "Major", number: 16, keywords: ["Bencana", "Wahyu", "Kehancuran", "Pembebasan"], description: "Cobaan hidup, kemarahan, dan menghancurkan pola lama yang tak diperlukan lagi." },
-  { id: 17, name: "The Star", nameIndo: "Bintang", arcana: "Major", number: 17, keywords: ["Harapan", "Spiritualitas", "Pembaruan", "Inspirasi"], description: "Pengakuan prestasi, idealis, kebutuhan bertindak." },
-  { id: 18, name: "The Moon", nameIndo: "Bulan", arcana: "Major", number: 18, keywords: ["Ilusi", "Ketakutan", "Kecemasan", "Bawah Sadar"], description: "Imajinasi dan hubungan sebab-akibat." },
-  { id: 19, name: "The Sun", nameIndo: "Matahari", arcana: "Major", number: 19, keywords: ["Kegembiraan", "Kehangatan", "Kesuksesan", "Vitalitas"], description: "Pencapaian tujuan, harga diri, dan pengakuan." },
-  { id: 20, name: "Judgement", nameIndo: "Pengadilan Akhir", arcana: "Major", number: 20, keywords: ["Penilaian", "Kelahiran Kembali", "Panggilan", "Absolusi"], description: "Pertimbangan hidup, evaluasi diri, keyakinan, pandangan, dan hubungan dengan transisi." },
-  { id: 21, name: "The World", nameIndo: "Bumi", arcana: "Major", number: 21, keywords: ["Penyelesaian", "Integrasi", "Pencapaian", "Perjalanan"], description: "Potensi yang terbatas dan pengembangan." }
+// Major Arcana Data Base with Astrology/Numerology
+export const MAJOR_ARCANA_BASE = [
+  { id: 0, code: 'm00', name: "The Fool", nameIndo: "Si Dungu", keywords: ["Awal baru", "Kepolosan", "Spontanitas"], desc: "Keterbukaan terhadap pengalaman baru.", astro: "Uranus / Udara", num: 0 },
+  { id: 1, code: 'm01', name: "The Magician", nameIndo: "Sang Pesulap", keywords: ["Manifestasi", "Keahlian", "Kekuatan"], desc: "Penggunaan akal sehat dan kehendak sadar.", astro: "Merkurius", num: 1 },
+  { id: 2, code: 'm02', name: "The High Priestess", nameIndo: "Pendeta Wanita", keywords: ["Intuisi", "Bawah Sadar", "Misteri"], desc: "Kebijaksanaan batin dan intuisi.", astro: "Bulan", num: 2 },
+  { id: 3, code: 'm03', name: "The Empress", nameIndo: "Sang Ratu", keywords: ["Kesuburan", "Alam", "Kenyamanan"], desc: "Kreativitas, kelimpahan, dan keibuan.", astro: "Venus", num: 3 },
+  { id: 4, code: 'm04', name: "The Emperor", nameIndo: "Sang Raja", keywords: ["Otoritas", "Struktur", "Ayah"], desc: "Stabilitas, aturan, dan kekuasaan.", astro: "Aries", num: 4 },
+  { id: 5, code: 'm05', name: "The Hierophant", nameIndo: "Ahli Tafsir Agama", keywords: ["Tradisi", "Keyakinan", "Pendidikan"], desc: "Konformitas sosial dan keyakinan spiritual.", astro: "Taurus", num: 5 },
+  { id: 6, code: 'm06', name: "The Lovers", nameIndo: "Sang Pecinta", keywords: ["Cinta", "Pilihan", "Harmoni"], desc: "Hubungan, nilai-nilai, dan pilihan moral.", astro: "Gemini", num: 6 },
+  { id: 7, code: 'm07', name: "The Chariot", nameIndo: "Kereta Perang", keywords: ["Kendali", "Tekad", "Kemenangan"], desc: "Mengatasi rintangan dengan tekad kuat.", astro: "Cancer", num: 7 },
+  { id: 8, code: 'm08', name: "Strength", nameIndo: "Kekuatan", keywords: ["Keberanian", "Persuasi", "Welas Asih"], desc: "Kekuatan batin dan kontrol emosi.", astro: "Leo", num: 8 },
+  { id: 9, code: 'm09', name: "The Hermit", nameIndo: "Sang Petapa", keywords: ["Introspeksi", "Pencarian", "Kesendirian"], desc: "Mencari jawaban di dalam diri sendiri.", astro: "Virgo", num: 9 },
+  { id: 10, code: 'm10', name: "Wheel of Fortune", nameIndo: "Roda Keberuntungan", keywords: ["Siklus", "Takdir", "Perubahan"], desc: "Perubahan nasib yang tak terelakkan.", astro: "Jupiter", num: 10 },
+  { id: 11, code: 'm11', name: "Justice", nameIndo: "Keadilan", keywords: ["Kebenaran", "Hukum", "Sebab-Akibat"], desc: "Kejujuran, keseimbangan, dan konsekuensi.", astro: "Libra", num: 11 },
+  { id: 12, code: 'm12', name: "The Hanged Man", nameIndo: "Lelaki Digantung", keywords: ["Pengorbanan", "Melepaskan", "Perspektif Baru"], desc: "Jeda, penyerahan diri, dan melihat dari sudut pandang lain.", astro: "Neptunus / Air", num: 12 },
+  { id: 13, code: 'm13', name: "Death", nameIndo: "Kematian", keywords: ["Akhir", "Transformasi", "Transisi"], desc: "Akhir dari sebuah siklus dan awal yang baru.", astro: "Scorpio", num: 13 },
+  { id: 14, code: 'm14', name: "Temperance", nameIndo: "Kesederhanaan", keywords: ["Keseimbangan", "Moderasi", "Kesabaran"], desc: "Penyatuan elemen-elemen yang berbeda.", astro: "Sagitarius", num: 14 },
+  { id: 15, code: 'm15', name: "The Devil", nameIndo: "Setan", keywords: ["Keterikatan", "Materialisme", "Ketidaktahuan"], desc: "Terjebak dalam ilusi materi atau nafsu.", astro: "Capricorn", num: 15 },
+  { id: 16, code: 'm16', name: "The Tower", nameIndo: "Menara", keywords: ["Bencana", "Wahyu", "Kehancuran"], desc: "Perubahan tiba-tiba yang menghancurkan struktur lama.", astro: "Mars", num: 16 },
+  { id: 17, code: 'm17', name: "The Star", nameIndo: "Bintang", keywords: ["Harapan", "Spiritualitas", "Inspirasi"], desc: "Harapan baru, ketenangan, dan penyembuhan.", astro: "Aquarius", num: 17 },
+  { id: 18, code: 'm18', name: "The Moon", nameIndo: "Bulan", keywords: ["Ilusi", "Ketakutan", "Bawah Sadar"], desc: "Ketidakpastian dan eksplorasi dunia mimpi.", astro: "Pisces", num: 18 },
+  { id: 19, code: 'm19', name: "The Sun", nameIndo: "Matahari", keywords: ["Kegembiraan", "Kehangatan", "Kesuksesan"], desc: "Kebahagiaan, vitalitas, dan pencerahan.", astro: "Matahari", num: 19 },
+  { id: 20, code: 'm20', name: "Judgement", nameIndo: "Pengadilan Akhir", keywords: ["Penilaian", "Kelahiran Kembali", "Panggilan"], desc: "Kebangkitan kesadaran dan evaluasi diri.", astro: "Pluto / Api", num: 20 },
+  { id: 21, code: 'm21', name: "The World", nameIndo: "Bumi", keywords: ["Penyelesaian", "Integrasi", "Pencapaian"], desc: "Kesempurnaan, pencapaian, dan perjalanan utuh.", astro: "Saturnus / Bumi", num: 21 }
 ];
 
 export const SPREADS: TarotSpread[] = [

@@ -11,14 +11,26 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="min-h-full container mx-auto px-4 py-8 pb-32 max-w-4xl">
-      <div class="mb-8 border-b border-yellow-600/30 pb-4 flex justify-between items-end">
+      <div class="mb-8 border-b border-yellow-600/30 pb-4 flex flex-col md:flex-row justify-between items-end gap-4">
         <div>
           <h2 class="text-3xl font-serif text-yellow-500 mb-2">Jurnal Jiwa</h2>
           <p class="text-indigo-300">Catatan perjalanan dan refleksi diri Anda.</p>
         </div>
-        <div class="text-right">
-          <span class="text-2xl font-bold text-white">{{ journalService.entries().length }}</span>
-          <span class="text-xs text-indigo-400 block uppercase tracking-wider">Entri</span>
+        <div class="text-right flex flex-col items-end gap-2">
+          <div class="flex items-center gap-2">
+             <span class="text-2xl font-bold text-white">{{ journalService.entries().length }}</span>
+             <span class="text-xs text-indigo-400 block uppercase tracking-wider">Entri</span>
+          </div>
+          <!-- Backup Controls -->
+          <div class="flex gap-2 text-xs">
+            <button (click)="downloadBackup()" class="bg-indigo-800 hover:bg-indigo-700 text-indigo-200 px-3 py-1 rounded transition-colors border border-indigo-600">
+              ⬇ Backup
+            </button>
+            <label class="bg-indigo-800 hover:bg-indigo-700 text-indigo-200 px-3 py-1 rounded transition-colors border border-indigo-600 cursor-pointer">
+              ⬆ Restore
+              <input type="file" (change)="handleRestore($event)" class="hidden" accept=".json">
+            </label>
+          </div>
         </div>
       </div>
 
@@ -41,7 +53,7 @@ import { RouterLink } from '@angular/router';
                 <div class="flex items-center gap-4 mb-2 md:mb-0">
                   <div class="w-12 h-12 rounded bg-indigo-950 flex flex-col items-center justify-center border border-indigo-700 text-yellow-500 font-serif">
                     <span class="text-lg font-bold">{{ entry.timestamp | date:'dd' }}</span>
-                    <span class="text-[10px] uppercase">{{ entry.timestamp | date:'MMM' }}</span>
+                    <span class="text--[10px] uppercase">{{ entry.timestamp | date:'MMM' }}</span>
                   </div>
                   <div>
                     <h3 class="text-lg font-bold text-yellow-100">{{ entry.spreadName }}</h3>
@@ -63,6 +75,14 @@ import { RouterLink } from '@angular/router';
               @if (isExpanded(entry.id)) {
                 <div class="p-6 border-t border-indigo-800 bg-indigo-900/40 animate-slide-down">
                   
+                  <!-- Intention/Context Display -->
+                  @if (entry.context) {
+                    <div class="mb-6 bg-indigo-950/50 p-3 rounded border border-indigo-800/50">
+                      <span class="text-[10px] uppercase text-indigo-400 tracking-wider font-bold">Intensi / Fokus:</span>
+                      <p class="text-indigo-200 text-sm italic">"{{ entry.context }}"</p>
+                    </div>
+                  }
+
                   <!-- Cards Summary -->
                   <div class="mb-6">
                     <h4 class="text-sm font-bold text-yellow-600 uppercase tracking-widest mb-3">Kartu Terpilih</h4>
@@ -137,6 +157,33 @@ export class JournalComponent {
     event.stopPropagation();
     if (confirm('Apakah Anda yakin ingin menghapus catatan jurnal ini?')) {
       this.journalService.deleteEntry(id);
+    }
+  }
+
+  downloadBackup() {
+    const data = this.journalService.exportData();
+    const blob = new Blob([data], { type: 'application/json' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tarot-journal-backup-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
+
+  handleRestore(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const text = e.target?.result as string;
+        if (this.journalService.importData(text)) {
+          alert('Data jurnal berhasil dipulihkan!');
+        } else {
+          alert('Gagal memulihkan data. File mungkin rusak.');
+        }
+      };
+      reader.readAsText(input.files[0]);
     }
   }
 }

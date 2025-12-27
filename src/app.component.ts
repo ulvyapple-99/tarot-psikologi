@@ -24,6 +24,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
         
         <nav class="flex items-center gap-2 flex-wrap justify-center">
           <a routerLink="/" routerLinkActive="text-white font-bold" [routerLinkActiveOptions]="{exact: true}" class="text-indigo-300 hover:text-white px-3 py-2 transition-colors text-sm">Beranda</a>
+          <a routerLink="/library" routerLinkActive="text-white font-bold" class="text-indigo-300 hover:text-white px-3 py-2 transition-colors text-sm">Pustaka</a>
           <a routerLink="/journal" routerLinkActive="text-white font-bold" class="text-indigo-300 hover:text-white px-3 py-2 transition-colors text-sm">Jurnal</a>
           <a routerLink="/reading" routerLinkActive="bg-yellow-600/40 text-yellow-100" class="ml-2 px-4 py-2 bg-yellow-600/20 border border-yellow-600/50 rounded hover:bg-yellow-600/40 text-yellow-200 transition-all text-sm">Mulai Konseling</a>
         </nav>
